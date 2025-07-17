@@ -316,7 +316,7 @@ async function submitOrder() {
       }))
     }
 
-    const response = await axios.post('https://ecom-shoe-b2nx.onrender.com/api/orders/create', payload)
+    const response = await axios.post('https://ecom-2-backend.onrender.com/api/orders/create', payload)
     console.log(response)
     toast.success('Your order was placed successfully!')
     submitting.value = false

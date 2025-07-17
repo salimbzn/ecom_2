@@ -14,7 +14,7 @@ const loadingExtras = ref(true)
 
 async function fetchProductDetails() {
   try {
-    const res = await axios.get(`https://ecom-shoe-no8p.onrender.com/api/products/${productId}/`)
+    const res = await axios.get(`https://ecom-2-backend.onrender.com/api/products/${productId}/`)
     product.value = res.data
   } catch (e) {
     console.error('Error fetching product:', e)
@@ -26,7 +26,7 @@ async function fetchProductDetails() {
 
 async function fetchProductVariants() {
   try {
-    const res = await axios.get(`https://ecom-shoe-no8p.onrender.com/api/products/${productId}/variants/`)
+    const res = await axios.get(`https://ecom-2-backend.onrender.com/api/products/${productId}/variants/`)
     if (product.value) {
       product.value.variants = res.data.variants
     }
