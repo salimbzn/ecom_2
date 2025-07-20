@@ -94,7 +94,7 @@ onMounted(async () => {
   // Use the home-specific fetch methods for top 4 products
   productStore.fetchTopOrderedHome()
   productStore.fetchDiscountedHome()
-  productStore.fetchNewProductsHome()
+  await productStore.fetchNewProductsHome()
 })
 
 watch(
