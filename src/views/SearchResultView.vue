@@ -39,22 +39,33 @@ function buildQuery(cat, searchTerm, page = 1) {
     page,
   };
 }
-function getCategoryImage(url) {
-  if (!url) return ''
-  try {
-    // Parse the incoming URL so we can reliably extract the pathname
-    const { pathname } = new URL(url)
-    // Your Bunny CDN zone hostname, including protocol
-    const cdnBase = 'https://cloudinary-image.b-cdn.net'
-    const params  = '?format=auto&quality=auto&width=200&height=200&fit=cover'
-    // Rebuild a fully‐qualified URL
-    return `${cdnBase}${pathname}${params}`
-  } catch (e) {
-    console.error('Invalid image URL:', url, e)
-    return url  // fallback to the original if parsing fails
+function getOptimizedImage(url) {
+  const bunnyBase = 'https://mybunnyI.b-cdn.net'; // Replace with your real BunnyCDN hostname
+
+  // ✅ Already BunnyCDN? Return as is
+  if (url.includes('b-cdn.net') || url.startsWith(bunnyBase)) {
+    return url;
   }
+
+  // ✅ Cloudinary → BunnyCDN without resizing
+  if (url.includes('res.cloudinary.com')) {
+    const parts = url.split('/upload/');
+    if (parts.length === 2) {
+      return `${bunnyBase}/image/upload/${parts[1]}`;
+    }
+    return url; // fallback if unexpected
+  }
+
+  // ✅ Proxy backend/static images via BunnyCDN
+  if (url.startsWith('http')) {
+    return `${bunnyBase}/uploads/${encodeURIComponent(url)}`;
+  }
+
+  // ✅ Fallback: relative URLs
+  return `${bunnyBase}${url.startsWith('/') ? '' : '/'}${url}`;
 }
 
+  
 function goToCategory(cat) {
   const query = buildQuery(cat, searchStore.searchTerm);
   router.push({ name: 'products', query });
@@ -109,7 +120,6 @@ onMounted(async () => {
     console.error('Error fetching categories:', error)
   }
 })
-
 </script>
 
 <template>
@@ -144,11 +154,8 @@ onMounted(async () => {
               </div>
               <img
                 v-else-if="cat.image"
-                :src="getCategoryImage(cat.image)"
+                :src="getOptimizedImage(cat.image)"
                 :alt="cat.name"
-                loading="lazy"
-                width="300"
-                height="200"
                 class="w-full h-full object-cover transition-transform group-hover:scale-105"
               />
               <div

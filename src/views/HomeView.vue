@@ -50,25 +50,31 @@ function setupScrollAnimations() {
 }
 
 function getOptimizedImage(url) {
-  if (!url.includes('cloudinary-image.b-cdn.net')) return url
-  const parts = url.split('/upload/')
-  return `${parts[0]}/upload/f_auto,q_auto,w_300,h_200,c_fill/${parts[1]}`
-}
-function getCategoryImage(url) {
-  if (!url) return ''
-  try {
-    // Parse the incoming URL so we can reliably extract the pathname
-    const { pathname } = new URL(url)
-    // Your Bunny CDN zone hostname, including protocol
-    const cdnBase = 'https://cloudinary-image.b-cdn.net'
-    const params  = '?format=auto&quality=auto&width=200&height=200&fit=cover'
-    // Rebuild a fully‐qualified URL
-    return `${cdnBase}${pathname}${params}`
-  } catch (e) {
-    console.error('Invalid image URL:', url, e)
-    return url  // fallback to the original if parsing fails
+  const bunnyBase = 'https://mybunnyI.b-cdn.net'; // Replace with your real BunnyCDN hostname
+
+  // ✅ Already BunnyCDN? Return as is
+  if (url.includes('b-cdn.net') || url.startsWith(bunnyBase)) {
+    return url;
   }
+
+  // ✅ Cloudinary → BunnyCDN without resizing
+  if (url.includes('res.cloudinary.com')) {
+    const parts = url.split('/upload/');
+    if (parts.length === 2) {
+      return `${bunnyBase}/image/upload/${parts[1]}`;
+    }
+    return url; // fallback if unexpected
+  }
+
+  // ✅ Proxy backend/static images via BunnyCDN
+  if (url.startsWith('http')) {
+    return `${bunnyBase}/uploads/${encodeURIComponent(url)}`;
+  }
+
+  // ✅ Fallback: relative URLs
+  return `${bunnyBase}${url.startsWith('/') ? '' : '/'}${url}`;
 }
+
 function showAllRecommended() {
   router.push({ name: 'products' })
 }
@@ -110,7 +116,7 @@ watch(
     <!-- Hero Section -->
     <section class="relative h-[500px] overflow-hidden flex items-center justify-center text-center mb-10">
       <div class="absolute inset-0 bg-cover bg-center scale-110 transition-all duration-1000"
-           :style="{ backgroundImage: 'url(/hero2.JPEG)' }"></div>
+           :style="{ backgroundImage: 'url(/hero.jpeg)' }"></div>
       <div class="absolute inset-0 bg-black/50"></div>
       <div
         class="relative z-10 text-white space-y-4 px-4 max-w-2xl mx-auto text-center"
@@ -118,9 +124,9 @@ watch(
         :initial="{ y: 30, opacity: 0 }"
         :enter="{ y: 0, opacity: 1, transition: { duration: 800 } }"
       >
-        <h1 class="text-4xl md:text-5xl font-extrabold">Trendy & Youthful.</h1>
+        <h1 class="text-4xl md:text-5xl font-extrabold">Step Up Your Style.</h1>
         <p class="text-lg max-w-xl mx-auto drop-shadow-md">
-          Wear the Trend. Own the Moment.
+          Find the perfect shoes for every step — from everyday comfort to standout style.
         </p>
         <button
           @click="$el.querySelector('#productSections')?.scrollIntoView({ behavior: 'smooth' })"
@@ -165,7 +171,7 @@ watch(
               </div>
               <img
                 v-else-if="cat.image"
-                :src="getCategoryImage(cat.image)"
+                :src="getOptimizedImage(cat.image)"
                 :alt="cat.name"
                 loading="lazy"
                 width="300"
