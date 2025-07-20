@@ -40,7 +40,7 @@ function buildQuery(cat, searchTerm, page = 1) {
   };
 }
 function getOptimizedImage(url) {
-  const bunnyBase = 'https://mybunnyI.b-cdn.net'; // Replace with your real BunnyCDN hostname
+  const bunnyBase = 'https://cloudinary-image.b-cdn.net'; // Replace with your real BunnyCDN hostname
 
   // ✅ Already BunnyCDN? Return as is
   if (url.includes('b-cdn.net') || url.startsWith(bunnyBase)) {

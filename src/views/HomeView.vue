@@ -50,7 +50,7 @@ function setupScrollAnimations() {
 }
 
 function getOptimizedImage(url) {
-  const bunnyBase = 'https://mybunnyI.b-cdn.net'; // Replace with your real BunnyCDN hostname
+  const bunnyBase = 'https://cloudinary-image.b-cdn.net'; // Replace with your real BunnyCDN hostname
 
   // ✅ Already BunnyCDN? Return as is
   if (url.includes('b-cdn.net') || url.startsWith(bunnyBase)) {
@@ -116,7 +116,7 @@ watch(
     <!-- Hero Section -->
     <section class="relative h-[500px] overflow-hidden flex items-center justify-center text-center mb-10">
       <div class="absolute inset-0 bg-cover bg-center scale-110 transition-all duration-1000"
-           :style="{ backgroundImage: 'url(/hero.jpeg)' }"></div>
+           :style="{ backgroundImage: 'url(/hero2.JPEG)' }"></div>
       <div class="absolute inset-0 bg-black/50"></div>
       <div
         class="relative z-10 text-white space-y-4 px-4 max-w-2xl mx-auto text-center"
@@ -124,9 +124,9 @@ watch(
         :initial="{ y: 30, opacity: 0 }"
         :enter="{ y: 0, opacity: 1, transition: { duration: 800 } }"
       >
-        <h1 class="text-4xl md:text-5xl font-extrabold">Step Up Your Style.</h1>
+        <h1 class="text-4xl md:text-5xl font-extrabold">Where Comfort Meets Confidence.</h1>
         <p class="text-lg max-w-xl mx-auto drop-shadow-md">
-          Find the perfect shoes for every step — from everyday comfort to standout style.
+         Ethically made, beautifully worn—your new favorites await.
         </p>
         <button
           @click="$el.querySelector('#productSections')?.scrollIntoView({ behavior: 'smooth' })"
