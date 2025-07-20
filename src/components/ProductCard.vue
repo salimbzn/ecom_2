@@ -6,7 +6,7 @@
         :src="optimizedImage"
         :alt="product.name"
         loading="eager"
-        width="600"
+        width="300"
         height="400"
         class="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-300 max-w-full max-h-full"
         :class="{'opacity-60': product.stock === 0}"
@@ -79,7 +79,7 @@ const props = defineProps({
 
 
 function getOptimizedImage(url) {
-  if (!url.includes('res.cloudinary.com')) return url
+  if (!url.includes('cloudinary-image.b-cdn.net')) return url
   const parts = url.split('/upload/')
   return `${parts[0]}/upload/f_auto,q_auto,w_150,h_150,c_fit/${parts[1]}`
 }

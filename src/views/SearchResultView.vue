@@ -39,7 +39,13 @@ function buildQuery(cat, searchTerm, page = 1) {
     page,
   };
 }
-
+function getCategoryImage(url) {
+  if (!url) return ''
+  const cdnBase = 'cloudinary-image.b-cdn.net'
+  const path = url.replace(/^https?:\/\/[^\/]+/, '')
+  const params = '?format=auto&quality=auto&width=200&height=200&fit=cover'
+  return `${cdnBase}${path}${params}`
+}
 function goToCategory(cat) {
   const query = buildQuery(cat, searchStore.searchTerm);
   router.push({ name: 'products', query });
@@ -94,6 +100,7 @@ onMounted(async () => {
     console.error('Error fetching categories:', error)
   }
 })
+
 </script>
 
 <template>
@@ -128,8 +135,11 @@ onMounted(async () => {
               </div>
               <img
                 v-else-if="cat.image"
-                :src="cat.image"
+                :src="getCategoryImage(cat.image)"
                 :alt="cat.name"
+                loading="lazy"
+                width="300"
+                height="200"
                 class="w-full h-full object-cover transition-transform group-hover:scale-105"
               />
               <div

@@ -156,7 +156,7 @@ const cartStore = useCartStore()
 const router = useRouter()
 
 function getOptimizedImage(url) {
-  if (!url || !url.includes('res.cloudinary.com')) return url
+  if (!url || !url.includes('cloudinary-image.b-cdn.net')) return url
   const parts = url.split('/upload/')
   return `${parts[0]}/upload/f_auto,q_auto,w_800,h_600,c_fit/${parts[1]}`
 }
