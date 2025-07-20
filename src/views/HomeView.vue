@@ -56,10 +56,18 @@ function getOptimizedImage(url) {
 }
 function getCategoryImage(url) {
   if (!url) return ''
-  const cdnBase = 'cloudinary-image.b-cdn.net'
-  const path = url.replace(/^https?:\/\/[^\/]+/, '')
-  const params = '?format=auto&quality=auto&width=200&height=200&fit=cover'
-  return `${cdnBase}${path}${params}`
+  try {
+    // Parse the incoming URL so we can reliably extract the pathname
+    const { pathname } = new URL(url)
+    // Your Bunny CDN zone hostname, including protocol
+    const cdnBase = 'https://cloudinary-image.b-cdn.net'
+    const params  = '?format=auto&quality=auto&width=200&height=200&fit=cover'
+    // Rebuild a fully‐qualified URL
+    return `${cdnBase}${pathname}${params}`
+  } catch (e) {
+    console.error('Invalid image URL:', url, e)
+    return url  // fallback to the original if parsing fails
+  }
 }
 function showAllRecommended() {
   router.push({ name: 'products' })
