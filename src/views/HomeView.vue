@@ -223,7 +223,7 @@ watch(
       </div>
 
       <!-- New Arrivals Section -->
-      <div v-if="newProducts.length > 0" class="scroll-animate opacity-0 translate-y-8 rounded-2xl bg-white shadow-md px-6 py-10 md:px-10">
+      <div v-if="newProducts" class="scroll-animate opacity-0 translate-y-8 rounded-2xl bg-white shadow-md px-6 py-10 md:px-10">
         <div class="flex items-center justify-between mb-10">
           <h2 class="text-3xl font-semibold text-gray-800 tracking-tight">New Arrivals</h2>
           <Button class="p-button-sm p-button-text" label="Show All" @click="showAllNewArrivals" />
