@@ -156,9 +156,13 @@ const cartStore = useCartStore()
 const router = useRouter()
 
 function getOptimizedImage(url) {
-  if (!url || !url.includes('cloudinary-image.b-cdn.net')) return url
   const parts = url.split('/upload/')
-  return `${parts[0]}/upload/f_auto,q_auto,w_800,h_600,c_fit/${parts[1]}`
+  if (parts.length !== 2) return url
+
+  // Replace domain with your BunnyCDN pull zone
+  const bunnyBase = 'https://cloudinary-image.b-cdn.net'
+
+  return `${bunnyBase}/image/upload/f_auto,q_auto,w_800,h_600,c_fit/${parts[1]}`
 }
 
 // Always set mainImage from main_image immediately, then update if images arrive

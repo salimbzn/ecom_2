@@ -78,10 +78,20 @@ const props = defineProps({
 })
 
 
-function getOptimizedImage(url) {
+/*function getOptimizedImage(url) {
   if (!url.includes('cloudinary-image.b-cdn.net')) return url
   const parts = url.split('/upload/')
   return `${parts[0]}/upload/f_auto,q_auto,w_150,h_150,c_fit/${parts[1]}`
+}*/
+function getOptimizedImage(url) {
+  if (!url.includes('res.cloudinary.com')) return url
+
+  const parts = url.split('/upload/')
+  if (parts.length !== 2) return url
+
+  const bunnyBase = 'https://cloudinary-image.b-cdn.net' // Replace with your real BunnyCDN hostname
+  console.log(`${bunnyBase}/image/upload/f_auto,q_auto,w_400,h_300,c_fit/${parts[1]}`)
+  return `${bunnyBase}/image/upload/f_auto,q_auto,w_400,h_300,c_fit/${parts[1]}`
 }
 
 const optimizedImage = computed(() => getOptimizedImage(props.product.image))
