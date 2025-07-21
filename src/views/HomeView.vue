@@ -223,16 +223,41 @@ watch(
       </div>
 
       <!-- New Arrivals Section -->
-      <div v-if="!loadingNewProducts && newProducts.length > 0" class="scroll-animate opacity-0 translate-y-8 rounded-2xl bg-white shadow-md px-6 py-10 md:px-10">
+        <div
+        v-if="!loadingNewProducts"
+        class="scroll-animate opacity-0 translate-y-8 rounded-2xl bg-white shadow-md px-6 py-10 md:px-10"
+        >
         <div class="flex items-center justify-between mb-10">
           <h2 class="text-3xl font-semibold text-gray-800 tracking-tight">New Arrivals</h2>
           <Button class="p-button-sm p-button-text" label="Show All" @click="showAllNewArrivals" />
         </div>
-        <ProductList
-          :products="newProducts"
-          title="New Arrivals"
-          :loading="loadingNewProducts"
-        />
+      
+        <div v-if="newProducts.length > 0">
+          <!-- Show products when available -->
+          <ProductList
+            :products="newProducts"
+            title="New Arrivals"
+            :loading="loadingNewProducts"
+          />
+        </div>
+      
+        <div v-else class="flex flex-col items-center justify-center text-center text-gray-500 py-10">
+          <svg
+            class="w-16 h-16 text-orange-400 mb-4"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 9v3m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <p class="text-lg font-medium">No new arrivals right now</p>
+          <p class="text-sm">Check back soon for the latest styles!</p>
+        </div>
       </div>
     </section>
 
