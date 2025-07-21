@@ -50,7 +50,7 @@ function setupScrollAnimations() {
 }
 
 function getOptimizedImage(url) {
-  const bunnyBase = 'https://cloudinary-image.b-cdn.net'; // Replace with your real BunnyCDN hostname
+  const bunnyBase = 'https://mybunnyI.b-cdn.net'; // Replace with your real BunnyCDN hostname
 
   // ✅ Already BunnyCDN? Return as is
   if (url.includes('b-cdn.net') || url.startsWith(bunnyBase)) {
@@ -61,18 +61,18 @@ function getOptimizedImage(url) {
   if (url.includes('res.cloudinary.com')) {
     const parts = url.split('/upload/');
     if (parts.length === 2) {
-      return `${bunnyBase}/image/upload/${parts[1]}`;
+      return ${bunnyBase}/image/upload/${parts[1]};
     }
     return url; // fallback if unexpected
   }
 
   // ✅ Proxy backend/static images via BunnyCDN
   if (url.startsWith('http')) {
-    return `${bunnyBase}/uploads/${encodeURIComponent(url)}`;
+    return ${bunnyBase}/uploads/${encodeURIComponent(url)};
   }
 
   // ✅ Fallback: relative URLs
-  return `${bunnyBase}${url.startsWith('/') ? '' : '/'}${url}`;
+  return ${bunnyBase}${url.startsWith('/') ? '' : '/'}${url};
 }
 
 function showAllRecommended() {
@@ -94,7 +94,7 @@ onMounted(async () => {
   // Use the home-specific fetch methods for top 4 products
   productStore.fetchTopOrderedHome()
   productStore.fetchDiscountedHome()
-  productStore.fetchNewProductsHome()
+  await productStore.fetchNewProductsHome()
 })
 
 watch(
@@ -116,7 +116,7 @@ watch(
     <!-- Hero Section -->
     <section class="relative h-[500px] overflow-hidden flex items-center justify-center text-center mb-10">
       <div class="absolute inset-0 bg-cover bg-center scale-110 transition-all duration-1000"
-           :style="{ backgroundImage: 'url(/hero2.JPEG)' }"></div>
+           :style="{ backgroundImage: 'url(/hero.jpeg)' }"></div>
       <div class="absolute inset-0 bg-black/50"></div>
       <div
         class="relative z-10 text-white space-y-4 px-4 max-w-2xl mx-auto text-center"
@@ -124,9 +124,9 @@ watch(
         :initial="{ y: 30, opacity: 0 }"
         :enter="{ y: 0, opacity: 1, transition: { duration: 800 } }"
       >
-        <h1 class="text-4xl md:text-5xl font-extrabold">Where Comfort Meets Confidence.</h1>
+        <h1 class="text-4xl md:text-5xl font-extrabold">Step Up Your Style.</h1>
         <p class="text-lg max-w-xl mx-auto drop-shadow-md">
-         Ethically made, beautifully worn—your new favorites await.
+          Find the perfect shoes for every step — from everyday comfort to standout style.
         </p>
         <button
           @click="$el.querySelector('#productSections')?.scrollIntoView({ behavior: 'smooth' })"
@@ -223,41 +223,16 @@ watch(
       </div>
 
       <!-- New Arrivals Section -->
-        <div
-        v-if="!loadingNewProducts"
-        class="scroll-animate opacity-0 translate-y-8 rounded-2xl bg-white shadow-md px-6 py-10 md:px-10"
-        >
+      <div v-if="newProducts" class="scroll-animate opacity-0 translate-y-8 rounded-2xl bg-white shadow-md px-6 py-10 md:px-10">
         <div class="flex items-center justify-between mb-10">
           <h2 class="text-3xl font-semibold text-gray-800 tracking-tight">New Arrivals</h2>
           <Button class="p-button-sm p-button-text" label="Show All" @click="showAllNewArrivals" />
         </div>
-      
-        <div v-if="newProducts.length > 0">
-          <!-- Show products when available -->
-          <ProductList
-            :products="newProducts"
-            title="New Arrivals"
-            :loading="loadingNewProducts"
-          />
-        </div>
-      
-        <div v-else class="flex flex-col items-center justify-center text-center text-gray-500 py-10">
-          <svg
-            class="w-16 h-16 text-orange-400 mb-4"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 9v3m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <p class="text-lg font-medium">No new arrivals right now</p>
-          <p class="text-sm">Check back soon for the latest styles!</p>
-        </div>
+        <ProductList
+          :products="newProducts"
+          title="New Arrivals"
+          :loading="loadingNewProducts"
+        />
       </div>
     </section>
 
